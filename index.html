@@ -10,7 +10,7 @@
        Sem unsafe-inline: handlers/scripts injetados nao executam; os 2 blocos inline
        legitimos entram por hash SHA-256. Ao editar JS inline, rode: node scripts/csp-hash.cjs
        (recalcula os hashes, senao a app nao carrega). unsafe-eval permanece (Tailwind JIT). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-u8lzBZlZD+kvopqDD4PNO1GImd7rgHuXRZ18++81gqg=' 'sha256-w3yIYvQLjcQ6QSNMXV1YykD9LugpmGm5/Alq+6EmwgM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://*.openstreetmap.org; font-src 'self' data:; connect-src 'self' blob: https://api.github.com https://nominatim.openstreetmap.org https://*.tile.openstreetmap.org; object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-u8lzBZlZD+kvopqDD4PNO1GImd7rgHuXRZ18++81gqg=' 'sha256-RSHEdJAvam62Bq5d/xvY24sRncln2vPFZyyxWZLT/fw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://*.openstreetmap.org; font-src 'self' data:; connect-src 'self' blob: https://api.github.com https://nominatim.openstreetmap.org https://*.tile.openstreetmap.org; object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'none'" />
   <title>Sistema de Gabinete</title>
 
   <!-- ── PWA ────────────────────────────────────────────────────────── -->
@@ -2408,7 +2408,9 @@
     async puxar(cfg) {
       const base = `/repos/${cfg.owner}/${cfg.repo}`, branch = this._branch(cfg);
       let r = await this._api(cfg, `${base}/git/ref/heads/${branch}`);
-      if (r.status === 404) return null; // repo/branch ainda vazio
+      // 404 = branch ainda não existe; 409 = repositório recém-criado, totalmente vazio
+      // ("Git Repository is empty"). Nos dois casos tratamos como cofre vazio → primeiro envio cria tudo.
+      if (r.status === 404 || r.status === 409) return null;
       if (!r.ok) throw new Error('Erro ao ler o repositório (HTTP ' + r.status + ').');
       const commitSha = (await r.json()).object.sha;
       const commit = await (await this._api(cfg, `${base}/git/commits/${commitSha}`)).json();

@@ -1,5 +1,5 @@
 /* Sistema de Gabinete — Service Worker */
-const CACHE_VERSION = 'v39-fuso-local';
+const CACHE_VERSION = 'v40-sync-409';
 const CACHE_NAME = `gabinete-${CACHE_VERSION}`;
 
 /* Todos os recursos são locais — o app funciona 100% offline. */
