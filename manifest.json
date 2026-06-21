@@ -1,0 +1,28 @@
+{
+  "name": "Sistema de Gabinete",
+  "short_name": "Gabinete",
+  "description": "Sistema de gestão de gabinete parlamentar municipal",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#0369A1",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["productivity", "government", "business"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable.svg",
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
